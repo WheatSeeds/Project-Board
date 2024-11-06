@@ -5,30 +5,28 @@
         task:{
           title: '',
           description: '',
+          edit: false,
         }
       }
     },
     methods:{
-      addTask(){
-        this.task.id = Date.now();
-        this.$emit('addTask', this.task);
-        this.task = {
-          title: '',
-          description: '',
-        }
+      confirmEdit(){
+        this.$emit('confirmEdit')
       }
     }
   }
 </script>
 
 <template>
-  <form @submit.prevent>
-    <input v-model="task.title" placeholder="Название">
-    <input v-model="task.description" placeholder="Описание">
-    <button id="add_task_btn" @click="addTask">Новая задача</button>
-  </form>
+  <div class="task edit">
+    <form @submit.prevent>
+      <input v-model="task.title" placeholder="Название">
+      <input v-model="task.description" placeholder="Описание">
+      <button id="add_task_btn" @click="confirmEdit">Done</button>
+    </form>
+  </div>
+  
 </template>
 
 <style scoped>
-
 </style>

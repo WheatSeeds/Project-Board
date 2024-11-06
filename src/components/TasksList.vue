@@ -1,32 +1,34 @@
 <script>
   export default {
+    components: {Task},
     props: {
       tasks: {
         type: Array,
         required: true
+      },
+      editedTask: {
+        type: Object,
+        required: true,
       }
     }
   }
+  import Task from './Task.vue'
 </script>
 
 <template>
-  <div id="tasks_list">
-    <div class="task" v-for="task in tasks">
-      <span>{{task.title}}</span>
-      <span>{{task.description}}</span>
-    </div>
+  <div id="tasks_list" v-if="tasks.length > 0">
+    <task
+        v-for="task in tasks"
+        :task="task"
+        :key="task.id"
+        :editedTask="editedTask"
+        @deleteTask="$emit('deleteTask', task)"
+        @editTask="$emit('editTask', task)"
+        @confirmEdit="$emit('confirmEdit')"
+    />
   </div>
+  <span v-else>Список задач пуст</span>
 </template>
 
 <style scoped>
-  .task{
-    background-color: #20212C;
-    width: 790px;
-    height: 135px;
-    margin-top: 15px;
-    color: white;
-
-    display: flex;
-    flex-direction: column;
-  }
 </style>
