@@ -24,11 +24,11 @@
         :editedTask="editedTask"
         @deleteTask="$emit('deleteTask', task)"
         @editTask="$emit('editTask', task)"
-        @confirmEdit="$emit('confirmEdit')"
+        @confirmEdit="$emit('confirmEdit', task)"
     />
   </div>
   <span v-else>Список задач пуст</span>
 </template>
 
-<style scoped>
+<style>
 </style>
