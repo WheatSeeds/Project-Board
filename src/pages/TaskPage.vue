@@ -40,7 +40,9 @@ export default {
     <nav class="navbar">
       <button class='new-task-btn' @click="addTask">New Task</button>
       <select class='filter-select' @change="changeOptions">
-        <option disabled value="">Sort by</option>
+        <option disabled value="" selected>Sort by</option>
+        <option>Name</option>
+        <option>Date</option>
       </select>
       <input class='search-bar' type="text" placeholder="Search task">
     </nav>

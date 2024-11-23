@@ -18,5 +18,10 @@ import project from "./Project.vue";
 </template>
 
 <style>
-
+  #project_list {
+    justify-content: center;
+    gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(4, 300px);
+  }
 </style>

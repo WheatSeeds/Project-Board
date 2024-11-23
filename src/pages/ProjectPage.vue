@@ -21,6 +21,38 @@
               {id: 5, title: "Название 2 2", description: "Описание 2 2"},
               {id: 6, title: "Название 3 3", description: "Описание 3 3"},
             ],
+          },
+          {
+            title: 'project_2',
+            tasks: [
+              {id: 4, title: "Название 1 1", description: "Описание 1 1"},
+              {id: 5, title: "Название 2 2", description: "Описание 2 2"},
+              {id: 6, title: "Название 3 3", description: "Описание 3 3"},
+            ],
+          },
+          {
+            title: 'project_2',
+            tasks: [
+              {id: 4, title: "Название 1 1", description: "Описание 1 1"},
+              {id: 5, title: "Название 2 2", description: "Описание 2 2"},
+              {id: 6, title: "Название 3 3", description: "Описание 3 3"},
+            ],
+          },
+          {
+            title: 'project_2',
+            tasks: [
+              {id: 4, title: "Название 1 1", description: "Описание 1 1"},
+              {id: 5, title: "Название 2 2", description: "Описание 2 2"},
+              {id: 6, title: "Название 3 3", description: "Описание 3 3"},
+            ],
+          },
+          {
+            title: 'project_2',
+            tasks: [
+              {id: 4, title: "Название 1 1", description: "Описание 1 1"},
+              {id: 5, title: "Название 2 2", description: "Описание 2 2"},
+              {id: 6, title: "Название 3 3", description: "Описание 3 3"},
+            ],
           }
         ],
       }
@@ -32,9 +64,9 @@
 </script>
 
 <template>
+  <span>My projects</span>
   <projects-list :projects="projects"/>
 </template>
 
-<style scoped>
-
+<style>
 </style>
