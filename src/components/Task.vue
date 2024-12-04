@@ -5,8 +5,10 @@
         task:{
           title: '',
           description: '',
+          date: '',
+          priority: '',
         },
-
+        dropdownVisible: false,
       }
     },
     props:{
@@ -32,6 +34,8 @@
         this.task = {
           title: '',
           description:'',
+          date: '',
+          priority: '',
         }
       }
 
@@ -41,25 +45,91 @@
 
 <template>
   <div class="task" v-if="!(editedTask == task)">
+    <div class="task-content">
     <div class="task-title">
       <span class="task-title-content">{{task.title}}</span>
+      <div
+          class="priorityBlock"
+          :class="{
+          'high-priority': task.priority === 'High',
+          'medium-priority': task.priority === 'Medium',
+          'low-priority': task.priority === 'Low'
+        }"><span>{{task.priority}}</span>
+      </div>
+    </div>
+
+    <div class="dropdown" @click="dropdownVisible = !dropdownVisible">
+      <img class="dropdown-image" alt="" src="../../public/images/icons/dots.svg">
+      <div class="dropdown-content" v-if="dropdownVisible">
+        <button @click="deleteTask(task)">Delete</button>
+        <button @click="editTask(task)">Edit</button>
+      </div>
     </div>
     <span class="task-description">{{task.description}}</span>
-    <div class="btns">
-      <button @click="deleteTask(task)">Удалить</button>
-      <button @click="editTask(task)">Редактировать</button>
+    <div class="task-date">
+      <img class="task-date-img" alt="" src="../../public/images/icons/calendar.svg">
+      <span class="task-date-content"> {{ new Date(task.date)
+          .toLocaleDateString(
+              'en-EN',
+              { day: 'numeric', month: 'long', year: 'numeric' }
+          ) }}
+    </span>
     </div>
+    </div>
+
+
   </div>
   <div class="task-edit" v-else>
     <form @submit.prevent>
       <input class="task-title-edit" v-model="task.title" placeholder="Название">
       <input class="task-description-edit" v-model="task.description" placeholder="Описание">
+      <input type="date" class="task-data-edit" v-model="task.date" placeholder="Date">
+      <select>
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
       <button id="add_task_btn" @click="confirmEdit">Done</button>
     </form>
   </div>
 </template>
 
 <style>
+  .task-content{
+    padding: 16px;
+  }
+  .dropdown-content{
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    position: absolute;
+  }
+  .dropdown-content > button{
+    height: 25px;
+  }
+  .dropdown-image{
+    width: 36px;
+  }
+  .priorityBlock{
+    height:24px;
+    width: max-content;
+    padding: 0 10px;
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .low-priority{
+    background-color: #00B81D;
+  }
+  .medium-priority{
+    background-color: #EF9712;
+  }
+  .high-priority{
+    background-color: #D34748;
+  }
   .task{
     display: flex;
     flex-direction: column;
@@ -67,21 +137,52 @@
   .task{
     background-color: #20212C;
     width: 790px;
-    height: 135px;
+    min-height: 135px;
+    max-height: max-content;
     border-radius: 16px;
     color: white;
+    display: grid;
   }
-  .task-title, .task-description{
+  .task-title, .task-description, .task-date-content, .priorityBlock{
     font-family: 'Montserrat', sans-serif;
-    color: gray;
+    color: #828388;
+  }
+  .priorityBlock{
+    color: white;
   }
   .task-title{
     color: #D3D3D6;
     font-weight: 600;
     font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    grid-area: 1 / 1 / 2 / 5;
   }
   .task-description{
+    grid-area: 2 / 1 / 3 / 6;
+  }
+  .task-description, .task-date-content{
     font-weight: 400;
     font-size: 16px;
+  }
+  .task-date{
+    display: flex;
+    align-items: center;
+    grid-area: 3 / 1 / 3 / 6;
+  }
+  .task-date-img{
+    width: 24px;
+    height: auto;
+  }
+
+  .task-content{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: 1fr auto 1fr;
+  }
+  .dropdown{
+    grid-area: 1 / 5 / 2 / 6;
+    justify-self: end;
   }
 </style>

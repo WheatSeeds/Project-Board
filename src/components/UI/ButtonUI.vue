@@ -16,5 +16,9 @@ button{
   width: 136px;
   height: 36px;
   cursor: pointer;
+
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
 }
 </style>

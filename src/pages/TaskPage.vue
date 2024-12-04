@@ -8,20 +8,83 @@ export default {
   data(){
     return{
       tasks: [
-        {id: 1, title: "Проверить документацию", description: "Design the Home screen according to the selected concept. Read the requirements in the brief carefully. Pay attention to style, color and font." },
-        {id: 2, title: "Создать макет страницы", description: "Разработать прототип интерфейса главной страницы." },
-        {id: 3, title: "Настроить окружение", description: "Входимые зависимости и настроить окружение для разработки." },
-        {id: 4, title: "Написать тесты", description: "Добавить модульные тесты для основных функций приложения." },
-        {id: 5, title: "Добавить анимацию", description: "Реализовать анимации для улучшения пользовательского опыта." },
-        {id: 6, title: "Оптимизировать запросы", description: "Снизить время выполнения запросов к серверу за счёт оптимизации." },
-        {id: 7, title: "Сделать код-ревью", description: "Проверить код коллег на наличие ошибок и предложить улучшения." },
-        {id: 8, title: "Обновить документацию", description: "Внести изменения в документацию, связанные с новыми функциями." },
-        {id: 9, title: "Провести встречу с командой", description: "Обсудить прогресс по задачам и уточнить приоритеты." },
-        {id: 10, title: "Подготовить презентацию", description: "Создать презентацию о текущем состоянии проекта для заказчика." },
-      ],
+        {
+          id: 1,
+          title: "Fix login form validation",
+          description: "Ensure all fields in the login form have proper validation. Add error messages for incorrect inputs and test thoroughly across browsers.",
+          date: "2024-12-15",
+          priority: "High"
+        },
+        {
+          id: 2,
+          title: "Update user profile page",
+          description: "Redesign the user profile page to include new fields: phone number, address, and profile picture. Ensure responsive design compatibility.",
+          date: "2024-12-18",
+          priority: "Medium"
+        },
+        {
+          id: 3,
+          title: "Write API documentation",
+          description: "Document all endpoints of the authentication API, including request formats, response formats, and example usage. Use clear and concise language.",
+          date: "2024-12-20",
+          priority: "Low"
+        },
+        {
+          id: 4,
+          title: "Prepare presentation for stakeholders",
+          description: "Create a PowerPoint presentation summarizing project progress, challenges faced, and upcoming milestones. Include visuals and graphs.",
+          date: "2024-12-22",
+          priority: "High"
+        },
+        {
+          id: 5,
+          title: "Optimize database queries",
+          description: "Analyze slow database queries and implement optimizations to improve performance. Focus on large data sets and frequently accessed tables.",
+          date: "2024-12-25",
+          priority: "Medium"
+        },
+        {
+          id: 6,
+          title: "Test mobile app compatibility",
+          description: "Perform thorough testing of the mobile app on both iOS and Android devices. Focus on edge cases and responsiveness issues.",
+          date: "2024-12-28",
+          priority: "High"
+        },
+        {
+          id: 7,
+          title: "Create onboarding flow",
+          description: "Design and develop an intuitive onboarding process for new users. Include tooltips, guides, and helpful resources.",
+          date: "2024-12-30",
+          priority: "Medium"
+        },
+        {
+          id: 8,
+          title: "Add unit tests for payment module",
+          description: "Write unit tests for all functions in the payment module. Aim for at least 90% test coverage and ensure existing tests pass.",
+          date: "2025-01-05",
+          priority: "Low"
+        },
+        {
+          id: 9,
+          title: "Set up CI/CD pipeline",
+          description: "Configure a continuous integration and deployment pipeline for the project. Automate testing, builds, and deployment steps.",
+          date: "2025-01-10",
+          priority: "High"
+        },
+        {
+          id: 10,
+          title: "Design email templates",
+          description: "Create responsive email templates for marketing campaigns, including welcome emails, password reset, and newsletters. Follow the brand's style guide.",
+          date: "2025-01-15",
+          priority: "Medium"
+        }
+      ]
+      ,
       tasksSortOptions: [
         {value: 'title', name: 'Name'},
         {value: 'description', name: 'Description'},
+        {value: 'date', name: 'Date'},
+        {value: 'priority', name: 'Priority'},
       ],
       editedTask: null,
       selectedSort: '',
@@ -30,7 +93,7 @@ export default {
   },
   methods: {
     addTask(){
-      const newTask = {id: Date.now(), title: '', description: ''};
+      const newTask = {id: Date.now(), title: '', description: '', date: ''};
       this.tasks.unshift(newTask);
       this.editedTask = newTask;
     },
@@ -75,6 +138,11 @@ export default {
 </template>
 
 <style>
+  .navbar{
+    display: flex;
+    gap: 16px;
+    margin: 16px 0;
+  }
   body{
     background-color: #17181F;
   }

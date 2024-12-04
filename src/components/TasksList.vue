@@ -31,4 +31,9 @@
 </template>
 
 <style>
+  #tasks_list{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
 </style>

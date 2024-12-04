@@ -40,5 +40,9 @@ export default {
     height: 36px;
     text-align: center;
     box-sizing: border-box;
+
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
   }
 </style>
