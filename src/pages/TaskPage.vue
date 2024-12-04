@@ -1,16 +1,31 @@
 <script>
 import TasksList from "../components/TasksList.vue";
-
+import ButtonUI from "../components/UI/ButtonUI.vue";
+import SearchBarUI from "../components/UI/SearchBarUI.vue";
+import FilterSelectorUI from "../components/UI/FilterSelectorUI.vue";
 export default {
-  components: {TasksList},
+  components: {TasksList, ButtonUI, SearchBarUI, FilterSelectorUI},
   data(){
     return{
       tasks: [
-        {id: 1, title: "Название 1", description: "Описание 1"},
-        {id: 2, title: "Название 2", description: "Описание 2"},
-        {id: 3, title: "Название 3", description: "Описание 3"},
+        {id: 1, title: "Проверить документацию", description: "Design the Home screen according to the selected concept. Read the requirements in the brief carefully. Pay attention to style, color and font." },
+        {id: 2, title: "Создать макет страницы", description: "Разработать прототип интерфейса главной страницы." },
+        {id: 3, title: "Настроить окружение", description: "Входимые зависимости и настроить окружение для разработки." },
+        {id: 4, title: "Написать тесты", description: "Добавить модульные тесты для основных функций приложения." },
+        {id: 5, title: "Добавить анимацию", description: "Реализовать анимации для улучшения пользовательского опыта." },
+        {id: 6, title: "Оптимизировать запросы", description: "Снизить время выполнения запросов к серверу за счёт оптимизации." },
+        {id: 7, title: "Сделать код-ревью", description: "Проверить код коллег на наличие ошибок и предложить улучшения." },
+        {id: 8, title: "Обновить документацию", description: "Внести изменения в документацию, связанные с новыми функциями." },
+        {id: 9, title: "Провести встречу с командой", description: "Обсудить прогресс по задачам и уточнить приоритеты." },
+        {id: 10, title: "Подготовить презентацию", description: "Создать презентацию о текущем состоянии проекта для заказчика." },
+      ],
+      tasksSortOptions: [
+        {value: 'title', name: 'Name'},
+        {value: 'description', name: 'Description'},
       ],
       editedTask: null,
+      selectedSort: '',
+      sortedTasks: [],
     }
   },
   methods: {
@@ -27,77 +42,49 @@ export default {
     },
     confirmEdit(task){
       this.editedTask = null;
-    },
-    changeOptions(event){
-
+    }
+  },
+  computed:{
+    sortedTasks(){
+      return [...this.tasks]
+          .sort((a,b)=>
+          a[this.selectedSort]?.
+          localeCompare(b[this.selectedSort]));
     }
   }
 }
 </script>
 
 <template>
-  <div class="task-page">
-    <nav class="navbar">
-      <button class='new-task-btn' @click="addTask">New Task</button>
-      <select class='filter-select' @change="changeOptions">
-        <option disabled value="" selected>Sort by</option>
-        <option>Name</option>
-        <option>Date</option>
-      </select>
-      <input class='search-bar' type="text" placeholder="Search task">
-    </nav>
-    <tasks-list
-        :tasks="tasks"
-        :editedTask="editedTask"
-        @deleteTask="deleteTask"
-        @editTask="editTask"
-        @confirmEdit="confirmEdit"
-    />
+  <div id="task-page">
+    <div id="task-page-content">
+      <nav class="navbar">
+        <button-u-i class='new-task-btn' @click="addTask">New Task</button-u-i>
+        <filter-selector-u-i v-model="selectedSort" :options="tasksSortOptions"></filter-selector-u-i>
+        <search-bar-u-i></search-bar-u-i>
+      </nav>
+      <tasks-list
+          :tasks="sortedTasks"
+          :editedTask="editedTask"
+          @deleteTask="deleteTask"
+          @editTask="editTask"
+          @confirmEdit="confirmEdit"
+      />
+    </div>
   </div>
 </template>
 
 <style>
-  .navbar{
-    display: flex;
-    gap: 16px;
-  }
-  .task-page{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .new-task-btn{
-    background-color: #FFFFFF;
-    border: none;
-    border-radius: 18px;
-    width: 136px;
-    height: 36px;
-    font-size: 16px;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 500;
-  }
-  .filter-select{
-    color: #D3D3D6;
-    border-radius: 18px;
-    border: 3px solid #4A4B52;
-    background-color: #17181F;
-    width: 116px;
-    height: 36px;
-    font-size: 16px;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 500;
-    text-align: center;
-    box-sizing: border-box;
-  }
   body{
     background-color: #17181F;
   }
-  .search-bar{
-    width: 506px;
-    height: 36px;
-    border-radius: 18px;
-    border: 3px solid #4A4B52;
-    background-color: #17181F;
-    box-sizing: border-box;
+  #task-page{
+    display: flex;
+    justify-content: center;
+  }
+  #task-page-content{
+    display: flex;
+    flex-direction: column;
+    width: max-content;
   }
 </style>

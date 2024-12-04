@@ -21,26 +21,5 @@
 </template>
 
 <style>
-  .project {
-    color: white;
-  }
-  .project{
-    height: 200px;
-    width: 300px;
-    background-color: #20212C;
-    border-radius: 10px;
-  }
-  .project > span{
-    font-size: 18px;
-  }
-  .t{
-    height: 21px;
-    width: 5px;
-    background-color: #562CFF;
-    border-radius: 100px;
-  }
-  .project_title{
-    display: flex;
-    gap: 16px;
-  }
+
 </style>
