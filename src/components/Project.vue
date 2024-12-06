@@ -21,8 +21,10 @@
 
 <style>
   .project{
-    width: 300px;
+    width: 250px;
     height: 200px;
-    background-color: white;
+    background-color: #20212C;
+    border-radius: 16px;
+
   }
 </style>

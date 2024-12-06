@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <input class='search-bar' type="text" placeholder="Search task">
+  <input class='search-bar' type="text" placeholder="Search">
 </template>
 
 <style scoped>

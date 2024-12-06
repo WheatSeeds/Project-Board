@@ -3,9 +3,10 @@ import TasksList from "../components/TasksList.vue";
 import ButtonUI from "../components/UI/ButtonUI.vue";
 import SearchBarUI from "../components/UI/SearchBarUI.vue";
 import FilterSelectorUI from "../components/UI/FilterSelectorUI.vue";
+import Header from "../components/Header.vue"
 
 export default {
-  components: {TasksList, ButtonUI, SearchBarUI, FilterSelectorUI},
+  components: {TasksList, ButtonUI, SearchBarUI, FilterSelectorUI, Header},
   data(){
     return{
       tasks: [
@@ -120,7 +121,7 @@ export default {
 </script>
 
 <template>
-
+  <Header></Header>
   <div id="task-page">
     <div id="task-page-content">
       <nav class="navbar">
@@ -149,7 +150,9 @@ export default {
     background-color: #17181F;
   }
   #task-page{
+    padding-top: 50px;
     display: flex;
+    justify-content: center;
   }
   #task-page-content{
     display: flex;
