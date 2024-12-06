@@ -18,5 +18,9 @@ import project from "./Project.vue";
 </template>
 
 <style>
-
+  #project_list {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, 300px);
+  }
 </style>

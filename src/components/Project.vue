@@ -13,7 +13,6 @@
   <div class="project">
     <div class="project_list_image"></div>
     <div class="project_title">
-      <div class="t"></div>
       <span>{{project.title}}</span>
     </div>
 
@@ -21,5 +20,9 @@
 </template>
 
 <style>
-
+  .project{
+    width: 300px;
+    height: 200px;
+    background-color: white;
+  }
 </style>

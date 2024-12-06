@@ -3,6 +3,7 @@ import TasksList from "../components/TasksList.vue";
 import ButtonUI from "../components/UI/ButtonUI.vue";
 import SearchBarUI from "../components/UI/SearchBarUI.vue";
 import FilterSelectorUI from "../components/UI/FilterSelectorUI.vue";
+
 export default {
   components: {TasksList, ButtonUI, SearchBarUI, FilterSelectorUI},
   data(){
@@ -119,6 +120,7 @@ export default {
 </script>
 
 <template>
+
   <div id="task-page">
     <div id="task-page-content">
       <nav class="navbar">
@@ -148,11 +150,11 @@ export default {
   }
   #task-page{
     display: flex;
-    justify-content: center;
   }
   #task-page-content{
     display: flex;
     flex-direction: column;
+    align-items: center;
     width: max-content;
   }
 </style>

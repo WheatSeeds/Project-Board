@@ -61,8 +61,8 @@
     <div class="dropdown" @click="dropdownVisible = !dropdownVisible">
       <img class="dropdown-image" alt="" src="../../public/images/icons/dots.svg">
       <div class="dropdown-content" v-if="dropdownVisible">
-        <button @click="deleteTask(task)">Delete</button>
-        <button @click="editTask(task)">Edit</button>
+        <button class="dropdown-btn" @click="editTask(task)">Edit</button>
+        <button class="dropdown-btn" @click="deleteTask(task)">Delete</button>
       </div>
     </div>
     <span class="task-description">{{task.description}}</span>
@@ -76,25 +76,35 @@
     </span>
     </div>
     </div>
-
-
   </div>
+
   <div class="task-edit" v-else>
-    <form @submit.prevent>
-      <input class="task-title-edit" v-model="task.title" placeholder="Название">
-      <input class="task-description-edit" v-model="task.description" placeholder="Описание">
-      <input type="date" class="task-data-edit" v-model="task.date" placeholder="Date">
-      <select>
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-      </select>
-      <button id="add_task_btn" @click="confirmEdit">Done</button>
+    <form class="task-content">
+      <div class="task-title">
+        <input class="task-title-edit" v-model="task.title" placeholder="Название">
+        <select>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
+      <input class="task-description" v-model="task.description" placeholder="Описание">
+
+        <input type="date" class="task-date-content" v-model="task.date" placeholder="Date">
+        <button id="add_task_btn" @click="confirmEdit">Done</button>
     </form>
   </div>
 </template>
 
 <style>
+  .task-title-edit{
+    color: #D3D3D6;
+    font-weight: 600;
+    font-size: 18px;
+    background-color: #17181F;
+    border: none
+
+  }
   .task-content{
     padding: 16px;
   }
@@ -103,9 +113,14 @@
     flex-direction: column;
     width: 150px;
     position: absolute;
+    border-radius: 16px;
+    overflow: hidden;
   }
   .dropdown-content > button{
     height: 25px;
+    color: white;
+    background-color: #272835;
+    border: none;
   }
   .dropdown-image{
     width: 36px;
@@ -134,7 +149,7 @@
     display: flex;
     flex-direction: column;
   }
-  .task{
+  .task, .task-edit{
     background-color: #20212C;
     width: 790px;
     min-height: 135px;

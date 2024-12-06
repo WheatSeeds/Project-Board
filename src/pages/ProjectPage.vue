@@ -1,6 +1,5 @@
 <script>
-  import ProjectsList from "../components/ProjectsList.vue";
-
+  import ProjectsList from "../components/ProjectsList.vue";;
   export default {
     components: {ProjectsList},
     data() {
@@ -64,9 +63,16 @@
 </script>
 
 <template>
-  <span>My projects</span>
-  <projects-list :projects="projects"/>
+
+  <div id="projects_page">
+    <sidebar></sidebar>
+    <span>Projects</span>
+    <projects-list :projects="projects"/>
+  </div>
 </template>
 
 <style>
+#projects_page {
+  display: flex;
+}
 </style>
