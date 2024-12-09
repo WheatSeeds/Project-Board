@@ -90,7 +90,8 @@ export default {
       ],
       editedTask: null,
       selectedSort: '',
-      sortedTasks: [],
+      searchQuery: '',
+      priorities: {High: 3, Medium: 2, Low: 1},
     }
   },
   methods: {
@@ -110,11 +111,23 @@ export default {
     }
   },
   computed:{
-    sortedTasks(){
-      return [...this.tasks]
-          .sort((a,b)=>
-          a[this.selectedSort]?.
-          localeCompare(b[this.selectedSort]));
+    sortedTasks() {
+      return [...this.tasks].sort((a, b) => {
+        if (this.selectedSort === 'date') {
+          return new Date(a.date) - new Date(b.date);
+        } else if (this.selectedSort === 'priority') {
+          return this.priorities[b.priority] - this.priorities[a.priority];
+        } else if (a[this.selectedSort] && b[this.selectedSort]) {
+          return a[this.selectedSort].localeCompare(b[this.selectedSort]);
+        } else {
+          return 0;
+        }
+      });
+    },
+    filteredTasks() {
+      return this.sortedTasks.filter(task =>
+          task.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
     }
   }
 }
@@ -127,10 +140,10 @@ export default {
       <nav class="navbar">
         <button-u-i class='new-task-btn' @click="addTask">New Task</button-u-i>
         <filter-selector-u-i v-model="selectedSort" :options="tasksSortOptions"></filter-selector-u-i>
-        <search-bar-u-i></search-bar-u-i>
+        <search-bar-u-i v-model="searchQuery"></search-bar-u-i>
       </nav>
       <tasks-list
-          :tasks="sortedTasks"
+          :tasks="filteredTasks"
           :editedTask="editedTask"
           @deleteTask="deleteTask"
           @editTask="editTask"

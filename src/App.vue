@@ -19,5 +19,9 @@ export default {
     padding: 0;
     list-style-type: none;
   }
+  :active, :hover, :focus {
+    outline: 0;
+    outline-offset: 0;
+  }
 
 </style>

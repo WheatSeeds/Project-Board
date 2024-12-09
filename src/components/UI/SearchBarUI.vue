@@ -1,9 +1,20 @@
-<script setup>
-
+<script>
+  export default {
+    props: {
+      modelValue: {
+        type: String,
+      }
+    },
+    methods: {
+      updateValue(event) {
+        this.$emit("update:modelValue", event.target.value);
+      },
+    },
+  }
 </script>
 
 <template>
-  <input class='search-bar' type="text" placeholder="Search">
+  <input class='search-bar' type="text" placeholder="Search" :value="modelValue || ''" @input="updateValue">
 </template>
 
 <style scoped>
@@ -18,6 +29,7 @@
   font-family: 'Roboto', sans-serif;
   font-weight: 500;
   padding-left: 16px;
+  color: white;
 }
 
 </style>

@@ -1,18 +1,25 @@
-<script>
-
+<script setup>
+  import { useAuthStore } from '../store'
+  const authStore = useAuthStore()
 </script>
+
 
 <template>
   <header>
     <div id="header-content">
       <div id="header-logo-container">
         <img id="header-logo" src="../../public/images/icons/img.png" alt="logo" />
-        <span id="header-logo-title">Plantera</span>
+        <span id="header-logo-title">OPANERA</span>
       </div>
       <ul id="header-navbar">
-        <router-link to="/projects" id="header-navbar-item">Projects</router-link>
-        <router-link to="/tasks" id="header-navbar-item">Contact</router-link>
-        <li id="header-navbar-item">Log in</li>
+        <router-link v-if="authStore.authenticated" to="/projects" id="header-navbar-item">Projects</router-link>
+        <router-link v-else to="/auth" id="header-navbar-item">Projects</router-link>
+
+        <router-link v-if="authStore.authenticated" to="/tasks" id="header-navbar-item">Contact</router-link>
+        <router-link v-else to="/auth" id="header-navbar-item">Contact</router-link>
+
+        <router-link v-if="authStore.authenticated" to="/auth" id="header-navbar-item">Log out</router-link>
+        <router-link v-else to="/auth" id="header-navbar-item">Log in</router-link>
       </ul>
     </div>
   </header>
