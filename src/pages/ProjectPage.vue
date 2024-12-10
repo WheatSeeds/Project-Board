@@ -1,110 +1,43 @@
-<script>
-  import ProjectsList from "../components/ProjectsList.vue";
-  import Header from "../components/Header.vue"
-  import FilterSelectorUI from "../components/UI/FilterSelectorUI.vue";
-  import SearchBarUI from "../components/UI/SearchBarUI.vue";
-  import ButtonUI from "../components/UI/ButtonUI.vue";
-  export default {
-    components: {ButtonUI, SearchBarUI, FilterSelectorUI, ProjectsList, Header},
-    data() {
-      return {
-        projects: [
-          {
-            title: 'project_1',
-            tasks: [
-              {id: 1, title: "Название 1", description: "Описание 1"},
-              {id: 2, title: "Название 2", description: "Описание 2"},
-              {id: 3, title: "Название 3", description: "Описание 3"},
-            ],
-          },
-          {
-            title: 'project_2',
-            tasks: [
-              {id: 4, title: "Название 1 1", description: "Описание 1 1"},
-              {id: 5, title: "Название 2 2", description: "Описание 2 2"},
-              {id: 6, title: "Название 3 3", description: "Описание 3 3"},
-            ],
-          },
-          {
-            title: 'project_2',
-            tasks: [
-              {id: 4, title: "Название 1 1", description: "Описание 1 1"},
-              {id: 5, title: "Название 2 2", description: "Описание 2 2"},
-              {id: 6, title: "Название 3 3", description: "Описание 3 3"},
-            ],
-          },
-          {
-            title: 'project_2',
-            tasks: [
-              {id: 4, title: "Название 1 1", description: "Описание 1 1"},
-              {id: 5, title: "Название 2 2", description: "Описание 2 2"},
-              {id: 6, title: "Название 3 3", description: "Описание 3 3"},
-            ],
-          },
-          {
-            title: 'project_2',
-            tasks: [
-              {id: 4, title: "Название 1 1", description: "Описание 1 1"},
-              {id: 5, title: "Название 2 2", description: "Описание 2 2"},
-              {id: 6, title: "Название 3 3", description: "Описание 3 3"},
-            ],
-          },
-          {
-            title: 'project_2',
-            tasks: [
-              {id: 4, title: "Название 1 1", description: "Описание 1 1"},
-              {id: 5, title: "Название 2 2", description: "Описание 2 2"},
-              {id: 6, title: "Название 3 3", description: "Описание 3 3"},
-            ],
-          },
-          {
-            title: 'project_2',
-            tasks: [
-              {id: 4, title: "Название 1 1", description: "Описание 1 1"},
-              {id: 5, title: "Название 2 2", description: "Описание 2 2"},
-              {id: 6, title: "Название 3 3", description: "Описание 3 3"},
-            ],
-          },
-          {
-            title: 'project_2',
-            tasks: [
-              {id: 4, title: "Название 1 1", description: "Описание 1 1"},
-              {id: 5, title: "Название 2 2", description: "Описание 2 2"},
-              {id: 6, title: "Название 3 3", description: "Описание 3 3"},
-            ],
-          },{
-            title: 'project_2',
-            tasks: [
-              {id: 4, title: "Название 1 1", description: "Описание 1 1"},
-              {id: 5, title: "Название 2 2", description: "Описание 2 2"},
-              {id: 6, title: "Название 3 3", description: "Описание 3 3"},
-            ],
-          },{
-            title: 'project_2',
-            tasks: [
-              {id: 4, title: "Название 1 1", description: "Описание 1 1"},
-              {id: 5, title: "Название 2 2", description: "Описание 2 2"},
-              {id: 6, title: "Название 3 3", description: "Описание 3 3"},
-            ],
-          }
-        ],
-        projectsSortOptions: [
-          {value: 'title', name: 'Name'},
-          {value: 'description', name: 'Description'},
-          {value: 'date', name: 'Date'},
-        ],
-        selectedSort: '',
-        sortedTasks: [],
-      }
-    },
-    methods: {
-      addProject(){
-        const newTask = {id: Date.now(), title: ''};
-        this.tasks.unshift(newTask);
-        this.editedTask = newTask;
-      },
-    }
+<script setup>
+import {ref} from 'vue';
+import ProjectsList from "../components/ProjectsList.vue";
+import Header from "../components/Header.vue";
+import FilterSelectorUI from "../components/UI/FilterSelectorUI.vue";
+import SearchBarUI from "../components/UI/SearchBarUI.vue";
+import ButtonUI from "../components/UI/ButtonUI.vue";
+import { useAuthStore } from '../store';
+import axios from "axios";
+
+const authStore = useAuthStore();
+const projects = ref(authStore.projects);
+
+const projectsSortOptions = [
+  {value: 'title', name: 'Name'},
+  {value: 'description', name: 'Description'},
+  {value: 'date', name: 'Date'},
+];
+const selectedSort = ref('');
+
+const newProjectTitle = ref('');
+const newProjectDescription = ref('');
+
+const addProject = async () => {
+  try {
+    const newProject = {
+      id: Date.now(),
+      title: newProjectTitle.value,
+      tasks: [],
+    };
+
+    const response = await axios.post('http://localhost:5000/projects', newProject);
+    authStore.projects.push(response.data.project);
+    projects.value = authStore.projects;
+  } catch (error) {
+    console.error('Failed to add project:', error);
+    alert('Error adding project');
   }
+};
+
 </script>
 
 <template>
@@ -116,6 +49,11 @@
       <search-bar-u-i></search-bar-u-i>
     </nav>
     <projects-list :projects="projects"/>
+  </div>
+  <div v-if="authStore.authenticated">
+    <input v-model="newProjectTitle" type="text" placeholder="Project title" />
+    <input v-model="newProjectDescription" type="text" placeholder="Project description" />
+    <button-u-i @click="addProject">Add Project</button-u-i>
   </div>
 </template>
 

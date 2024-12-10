@@ -19,6 +19,12 @@ export default {
     padding: 0;
     list-style-type: none;
   }
+  a
+  { text-decoration: none;
+  }
+  a,a:hover,a:visited,a:active {
+    color: white;
+  }
   :active, :hover, :focus {
     outline: 0;
     outline-offset: 0;
