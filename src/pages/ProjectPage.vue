@@ -31,6 +31,37 @@
     console.log(project)
     editedProject.value = project;
   };
+  const confirmEdit = async () => {
+    try {
+      const token = authStore.token;
+      const projectId = editedProject.value._id; // Assuming `editedProject` is a reactive object with `_id` field
+      const updatedProject = {
+        title: editedProject.value.title, // or other fields you want to update
+      };
+
+      const response = await axios.put(
+          `http://localhost:5000/projects/${projectId}`,
+          updatedProject,
+          { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (response.status === 200) {
+        // Update project locally after successful update
+        const index = projects.value.findIndex(p => p._id === projectId);
+        if (index !== -1) {
+          projects.value[index] = response.data.project;
+        }
+
+        alert('Project updated successfully!');
+        editedProject.value = null; // Clear the edited project state
+      } else {
+        alert('Failed to update project. Please try again later.');
+      }
+    } catch (error) {
+      console.error('Error updating project:', error);
+      alert('Failed to update project. Please try again later.');
+    }
+  };
   const deleteProject = async (projectId) => {
     try {
       const token = authStore.token;

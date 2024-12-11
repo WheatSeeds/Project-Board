@@ -35,6 +35,40 @@ const editTask = async (task) => {
   editedTask.value = task;
 };
 
+const deleteTask = async (taskId) => {
+  const taskIndex = tasksList.value.findIndex(task => task._id === taskId._id);
+  if (taskIndex !== -1) {
+    tasksList.value.splice(taskIndex, 1);
+
+    // Send delete request to server
+    try {
+      await axios.delete(`/projects/${projectId}`, {
+        headers: { Authorization: `Bearer ${authStore.token}` },
+      });
+      await authStore.fetchProjects(); // Обновляем проекты после удаления
+    } catch (error) {
+      console.error('Failed to delete task:', error);
+    }
+  }
+};
+
+const confirmEdit = async (task) =>{
+  editedTask.value = null;
+  try {
+    await axios.post(`/projects/${projectId}`, task, {
+      headers: { Authorization: `Bearer ${authStore.token}` },
+    });
+    const projectIndex = authStore.projects.findIndex(p => p._id === projectId);
+    if (projectIndex !== -1) {
+      authStore.projects[projectIndex] = await axios.get(`/projects/${projectId}`, {
+        headers: { Authorization: `Bearer ${authStore.token}` },
+      }).then(response => response.data.project);
+    }
+  } catch (error) {
+    console.error('Failed to confirm edit:', error);
+  }
+}
+
 const sortedTasks = computed(() => {
   return [...tasksList.value].sort((a, b) => {
     if (selectedSort.value === "date") {

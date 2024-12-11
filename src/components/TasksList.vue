@@ -27,7 +27,6 @@
         @confirmEdit="$emit('confirmEdit', task)"
     />
   </div>
-  <span v-else>Список задач пуст</span>
 </template>
 
 <style>
