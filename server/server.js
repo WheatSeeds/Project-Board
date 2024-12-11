@@ -28,6 +28,7 @@ const UserSchema = new mongoose.Schema({
 });
 
 const ProjectSchema = new mongoose.Schema({
+    id: Number,
     title: String,
     tasks: [
         {
@@ -41,9 +42,61 @@ const ProjectSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', UserSchema);
 const Project = mongoose.model('Project', ProjectSchema);
+app.put('/projects/:projectId', async (req, res) => {
+    const { projectId } = req.params;
+    const { title } = req.body;
 
-// Endpoints
-// Register
+    try {
+        const decoded = jwt.verify(token, SECRET_KEY);
+        const user = await User.findById(decoded.userId);
+
+        if (!user.projects.includes(projectId)) {
+            return res.status(403).json({ message: 'Access denied' });
+        }
+
+        const project = await Project.findByIdAndUpdate(
+            projectId,
+            { title },
+            { new: true }
+        );
+
+        if (!project) {
+            return res.status(404).json({ message: 'Project not found' });
+        }
+
+        res.status(200).json({ message: 'Project updated successfully', project });
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating project', error });
+    }
+});
+
+
+app.delete('/projects/:projectId', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    const { projectId } = req.params;
+    try {
+        const decoded = jwt.verify(token, SECRET_KEY);
+        const user = await User.findById(decoded.userId);
+
+        // Найти проект по ID и удалить его
+        const project = await Project.findById(projectId);
+        if (!project) {
+            return res.status(404).json({ message: 'Project not found' });
+        }
+
+        // Удалить проект из списка проектов пользователя
+        user.projects = user.projects.filter(p => p.toString() !== projectId);
+        await user.save();
+
+        // Удалить проект из базы данных
+        await Project.findByIdAndDelete(projectId);
+
+        res.status(200).json({ message: 'Project deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting project', error });
+    }
+});
+
 app.post('/register', async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -56,18 +109,11 @@ app.post('/register', async (req, res) => {
     }
 });
 
-// Login
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
         const user = await User.findOne({ email }).populate('projects');
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(401).json({ message: 'Invalid credentials' });
-        }
         const token = jwt.sign({ userId: user._id }, SECRET_KEY, { expiresIn: '1h' });
         res.status(200).json({ token, projects: user.projects });
     } catch (error) {
@@ -75,25 +121,88 @@ app.post('/login', async (req, res) => {
     }
 });
 
-// Get Projects
+app.post('/projects', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    try {
+        const decoded = jwt.verify(token, SECRET_KEY);
+        const user = await User.findById(decoded.userId);
+        const { _id, title, tasks } = req.body;
+
+        let project;
+
+        if (_id) {
+            // Если передан _id, пытаемся найти и обновить проект
+            project = await Project.findByIdAndUpdate(
+                _id,
+                { title, tasks },
+                { new: true }
+            );
+
+            if (!project) {
+                return res.status(404).json({ message: 'Project not found' });
+            }
+        } else {
+            // Если _id отсутствует, создаём новый проект
+            project = new Project({ title, tasks });
+            await project.save();
+            user.projects.push(project._id);
+            await user.save();
+        }
+
+        res.status(200).json({
+            message: _id ? 'Project updated successfully' : 'Project created successfully',
+            project,
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Error processing project', error });
+    }
+});
+
+app.post('/projects/:projectId', async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    const { projectId } = req.params;
+    const { title, description, date, priority } = req.body;
+
+    try {
+        const decoded = jwt.verify(token, SECRET_KEY);
+        const user = await User.findById(decoded.userId);
+
+        // Проверка на доступ к проекту
+        if (!user.projects.includes(projectId)) {
+            return res.status(403).json({ message: 'Access denied' });
+        }
+
+        // Находим проект и добавляем задачу
+        const project = await Project.findByIdAndUpdate(
+            projectId,
+            { $push: { tasks: { title, description, date, priority } } },
+            { new: true }
+        );
+
+        if (!project) {
+            return res.status(404).json({ message: 'Project not found' });
+        }
+
+        res.status(200).json({
+            message: 'Task added successfully',
+            project
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Error adding task', error });
+    }
+});
+
 app.get('/projects', async (req, res) => {
     const token = req.headers.authorization?.split(' ')[1];
-    if (!token) {
-        return res.status(401).json({ message: 'Unauthorized' });
-    }
     try {
         const decoded = jwt.verify(token, SECRET_KEY);
         const user = await User.findById(decoded.userId).populate('projects');
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
         res.status(200).json({ projects: user.projects });
     } catch (error) {
         res.status(500).json({ message: 'Error fetching projects', error });
     }
 });
 
-// Start Server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });

@@ -19,6 +19,13 @@ export default {
     padding: 0;
     list-style-type: none;
   }
+  body{
+    background: rgb(23,24,31);
+    background: -moz-linear-gradient(270deg, rgba(23,24,31,1) 42%, rgba(0,0,0,1) 100%);
+    background: -webkit-linear-gradient(270deg, rgba(23,24,31,1) 42%, rgba(0,0,0,1) 100%);
+    background: linear-gradient(270deg, rgba(23,24,31,1) 42%, rgba(0,0,0,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#17181f",endColorstr="#000000",GradientType=1);
+  }
   a
   { text-decoration: none;
   }

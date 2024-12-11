@@ -12,7 +12,8 @@ const route = useRoute();
 const authStore = useAuthStore();
 
 const projectId = route.params.projectId;
-const tasksList = ref(authStore.projects[projectId]?.tasks || []);
+const project = authStore.projects.find(p => p._id === projectId);
+const tasksList = ref(project ? project.tasks : []);
 const tasksSortOptions = [
   { value: "title", name: "Name" },
   { value: "description", name: "Description" },
@@ -24,22 +25,14 @@ const selectedSort = ref("");
 const searchQuery = ref("");
 const priorities = { High: 3, Medium: 2, Low: 1 };
 
-const addTask = () => {
-  const newTask = { id: Date.now(), title: "", description: "", date: "" };
-  tasksList.value.unshift(newTask);
+const addTask = async () => {
+  const newTask = { id: Date.now(), title: "", description: "", date: "", priority: "Low" };
+  tasksList.value.push(newTask);
   editedTask.value = newTask;
 };
 
-const deleteTask = (task) => {
-  tasksList.value.splice(tasksList.value.indexOf(task), 1);
-};
-
-const editTask = (task) => {
+const editTask = async (task) => {
   editedTask.value = task;
-};
-
-const confirmEdit = () => {
-  editedTask.value = null;
 };
 
 const sortedTasks = computed(() => {
@@ -90,7 +83,11 @@ const filteredTasks = computed(() => {
   margin: 16px 0;
 }
 body {
-  background-color: #17181f;
+  background: rgb(23,24,31);
+  background: -moz-linear-gradient(270deg, rgba(23,24,31,1) 42%, rgba(0,0,0,1) 100%);
+  background: -webkit-linear-gradient(270deg, rgba(23,24,31,1) 42%, rgba(0,0,0,1) 100%);
+  background: linear-gradient(270deg, rgba(23,24,31,1) 42%, rgba(0,0,0,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#17181f",endColorstr="#000000",GradientType=1);
 }
 #task-page {
   padding-top: 50px;

@@ -62,11 +62,11 @@ export default {
         <button v-else id="submit-btn" type="submit">Register</button>
       </form>
       <div v-if="isLogin" class="auth-form-field">
-        <span class="auth-form-label">Don't have an account?</span>
+        <span class="auth-form-label">Don't have an account? </span>
         <button class="auth-switch-btn" @click="changeForm">Register</button>
       </div>
       <div v-else class="auth-form-field">
-        <span class="auth-form-label">Do you already have an account?</span>
+        <span class="auth-form-label">Do you already have an account? </span>
         <button class="auth-switch-btn" @click="changeForm">Log in</button>
       </div>
     </div>
@@ -74,7 +74,7 @@ export default {
 </template>
 
 <style scoped>
-  .auth-switch-bth{
+  .auth-switch-btn{
     background-color: rgb(0,0,0,0);
     color: #255ac6;
     border: none;
